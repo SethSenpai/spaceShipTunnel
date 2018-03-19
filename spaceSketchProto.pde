@@ -1,3 +1,9 @@
+import ch.bildspur.postfx.builder.*;
+import ch.bildspur.postfx.pass.*;
+import ch.bildspur.postfx.*;
+
+import processing.serial.*;
+
 import fisica.*;
 
 FWorld world;
@@ -14,8 +20,18 @@ iRenderer iR;
 
 PShader nebula;
 
+Serial ardCom;
+String comVal;
+
+int[] serialInArray = new int[2];    // Where we'll put what we receive
+int serialCount = 0;                 // A count of how many bytes we receive
+boolean firstContact = false;
+
+PostFX fx;
+
 void setup(){
-  fullScreen(P2D,SPAN);
+  //fullScreen(P2D,SPAN);
+  size(800,600,P2D);
   frameRate(60);
   smooth();
   
@@ -54,14 +70,22 @@ void setup(){
   
   tPoints.addPoint(100,100,1,1);
   tPoints.addPoint(200,200,2,1);
-  tPoints.addPoint(300,300,3,2);
-  tPoints.addPoint(400,400,4,2);
+  tPoints.addPoint(300,300,3,1);
+  tPoints.addPoint(400,400,4,1);
+  tPoints.addPoint(500,300,5,2);
+  tPoints.addPoint(600,400,6,2);
   
   nebula = loadShader("nebula.glsl");
   nebula.set("resolution",float(width),float(height));
   
   //set this to adjust for final resolution during projection
-  iR = new iRenderer(width,height,0);
+  iR = new iRenderer(width,height-40,0);
+  
+  String portName = Serial.list()[1];
+  ardCom = new Serial(this, portName, 9600);
+  ardCom.bufferUntil(10);
+  
+  fx = new PostFX(this);  
 }
 
 void draw(){
@@ -82,6 +106,10 @@ void draw(){
   world.step();
   world.draw();
   
+    fx.render()
+    .bloom(0.6, 20, 50)
+    .compose();
+  
   //make sure the internal resolution is rendered. THIS METHOD MUST ALWAYS BE CALLED LAST IN THE DRAW STACK!
   iR.render();
   
@@ -93,6 +121,7 @@ void mousePressed(){
 }
 
 void keyPressed(){
+    /* particle simulations
     if(key == '1'){
       tPoints.pointTouched(1); //this would get triggered when someone touches a point
     }
@@ -104,5 +133,18 @@ void keyPressed(){
     }
     if(key == '4'){
       tPoints.pointTouched(4); //this would get triggered when someone touches a point
-    }
+    }*/
 }
+
+void serialEvent(Serial ardCom) { 
+  comVal = ardCom.readString(); 
+  String[] a = comVal.split(",");
+  //println(a);
+  if(a.length == 6){
+   tPoints.updateValues(a);
+  }
+  else
+  {
+   println("incomplete input"); 
+  }
+} 
