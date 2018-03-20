@@ -9,8 +9,8 @@ class touchAll{
      ps = p;
    }
    
-   void addPoint(int x, int y, int ID, int TYPE) {
-    points.add(new touchPoint(x,y,ID,TYPE));
+   void addPoint(int x, int y, int s, int ID, int TYPE) {
+    points.add(new touchPoint(x,y,s,ID,TYPE));
    }
    
    void pointTouched(int ID){
@@ -45,12 +45,12 @@ class touchAll{
       print("\t");
       p.run();
       if(p.STATE == 1){
-       p.size = 10 + (p.value / 10); 
+       //p.size = 10 + (p.value / 10); 
       }
       
       if(p.STATE == 0)
       {
-        p.size = 10;
+        //p.size = 10;
       }
       
       if(p.STATE == 2){

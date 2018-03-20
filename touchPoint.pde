@@ -14,13 +14,13 @@ class touchPoint{
   int timer;
   boolean timerStart;
   
-  touchPoint(int x, int y, int id, int type){
+  touchPoint(int x, int y, int s, int id, int type){
      posX = x;
      posY = y;
      ID = id;
      TYPE = type;
      c = color(0,255,255);
-     size = 10;
+     size = s;
      value = 0;
      avg = new int[6];
      trigger = 300;
