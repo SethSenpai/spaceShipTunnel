@@ -3,10 +3,16 @@
 class touchAll{
    ArrayList<touchPoint> points; 
    ParticleSystem ps;
+   SpaceTeam sp1;
+   SpaceTeam sp2;
+   SpaceTeam sp3;
    
-   touchAll(ParticleSystem p){
+   touchAll(ParticleSystem p, SpaceTeam s, SpaceTeam c, SpaceTeam a){
      points = new ArrayList<touchPoint>();
      ps = p;
+     sp1 = s;
+     sp2 = c;
+     sp3 = a;
    }
    
    void addPoint(int x, int y, int s, int ID, int TYPE) {
@@ -50,7 +56,26 @@ class touchAll{
       
       if(p.STATE == 0)
       {
-        //p.size = 10;
+        switch(p.ID){
+          case 1:
+            sp1.spawned = false;
+          break;
+          case 2:
+            
+          break;
+          case 3:
+            sp2.spawned = false;
+          break;
+          case 4:
+            
+          break;
+          case 5: 
+            sp3.spawned = false;
+          break;
+          case 6:
+            
+          break;   
+        }
       }
       
       if(p.STATE == 2){
@@ -62,6 +87,32 @@ class touchAll{
       
       if(p.STATE == 3){
         p.c = color(255,255,0);
+        switch(p.ID){
+          case 1:
+            for(int j=0; j<5 ; j++){
+              sp1.trickleSpaceShip(new SpaceShip(200,300,1));
+             }
+          break;
+          case 2:
+             sp1.orbitAstroid();
+          break;
+          case 3:
+            for(int j=0; j<5 ; j++){
+              sp2.trickleSpaceShip(new SpaceShip(600,450,2));
+             }
+          break;
+          case 4:
+             sp2.orbitAstroid();
+          break;
+          case 5:
+            for(int j=0; j<5 ; j++){
+              sp3.trickleSpaceShip(new SpaceShip(1000,100,3));
+             }
+          break;
+          case 6:
+               sp3.orbitAstroid();
+          break;          
+        }
       }
       else{
         p.c = color(0,255,255); 

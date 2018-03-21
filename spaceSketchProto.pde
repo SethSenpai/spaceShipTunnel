@@ -34,15 +34,23 @@ Planet planet1, planet1_tar, planet2, planet2_tar, planet3, planet3_tar;
 SpaceShip spaceShip;
 SpaceTeam spaceTeam1, spaceTeam2, spaceTeam3;
 
+color planetBlue = color(68,140,255);
+color astroidBrown = color(158,78,0);
+
 void setup(){
   fullScreen(P2D,SPAN);
   //size(1920,1080,P2D);
   frameRate(60);
   smooth();
   
-  tPoints = new touchAll(ps);
+  ps = new ParticleSystem(new PVector(0,0)); 
   
-  ps = new ParticleSystem(new PVector(0,0));  
+  //Create spaceTeams that contains multiple spaceships;  
+  spaceTeam1 = new SpaceTeam(1,planet1_tar);
+  spaceTeam2 = new SpaceTeam(2,planet2_tar);
+  spaceTeam3 = new SpaceTeam(3,planet3_tar);
+  
+  tPoints = new touchAll(ps,spaceTeam1,spaceTeam2,spaceTeam3);
   
   //setup the world (Setting up physics engine)
   setupWorld();
@@ -59,10 +67,7 @@ void setup(){
   fx = new PostFX(this);  
   
     
-  //Create spaceTeams that contains multiple spaceships;  
-  spaceTeam1 = new SpaceTeam(1);
-  spaceTeam2 = new SpaceTeam(2);
-  spaceTeam3 = new SpaceTeam(3);
+
   
   bg = new bGround("background.png",70,0.5);
   
@@ -76,6 +81,10 @@ void draw(){
   
   //make sure the touchpoints are drawn
   tPoints.run();
+      
+      fx.render()
+    .bloom(0.6, 40, 100)
+    .compose();
   
   displayPlanets();
   
@@ -89,12 +98,9 @@ void draw(){
     fx.render()
     .bloom(0.6, 20, 50)
     .compose();
-  
-  //make sure the internal resolution is rendered. THIS METHOD MUST ALWAYS BE CALLED LAST IN THE DRAW STACK!
-  iR.render();
-  
-
-  
+    
+    
+     
     if(spaceTeam1 != null){
      spaceTeam1.run();
   }
@@ -107,6 +113,9 @@ void draw(){
      spaceTeam3.run();
   }
   
+  //make sure the internal resolution is rendered. THIS METHOD MUST ALWAYS BE CALLED LAST IN THE DRAW STACK!
+  iR.render();
+  
 }
 
 //used for simulation of touchpoint explosions
@@ -116,6 +125,7 @@ void mousePressed(){
 
 void keyPressed(){
     // particle simulations
+    /*
     if(key == '1'){
       tPoints.pointTouched(1); //this would get triggered when someone touches a point
     }
@@ -128,6 +138,7 @@ void keyPressed(){
     if(key == '4'){
       tPoints.pointTouched(4); //this would get triggered when someone touches a point
     }
+    */
     /*
     if(key == '1'){   
       for(int i=0; i<5 ; i++){
@@ -172,23 +183,23 @@ void setupPlanets(){
   tPoints.addPoint(600,400,20,6,2);
   */
   
-  planet1 = new Planet(200,300,50);
-  tPoints.addPoint(200,300,50,1,1);
+  planet1 = new Planet(200,300,80,planetBlue);
+  tPoints.addPoint(200,300,70,1,1);
   
-  planet1_tar = new Planet(400,500,70);
-  tPoints.addPoint(400,500,70,2,2);
+  planet1_tar = new Planet(400,500,30,astroidBrown);
+  tPoints.addPoint(400,500,25,2,2);
   
-  planet2 = new Planet(600,450,80);
-  tPoints.addPoint(600,450,80,3,1);
+  planet2 = new Planet(600,450,80,planetBlue);
+  tPoints.addPoint(600,450,70,3,1);
   
-  planet2_tar = new Planet(800,250,40);
-  tPoints.addPoint(800,250,40,4,2);
+  planet2_tar = new Planet(800,250,30,astroidBrown);
+  tPoints.addPoint(800,250,25,4,2);
   
-  planet3 = new Planet(1000,100,50);
-  tPoints.addPoint(1000,100,50,5,1);
+  planet3 = new Planet(1000,100,80,planetBlue);
+  tPoints.addPoint(1000,100,70,5,1);
   
-  planet3_tar = new Planet(1100,350,75);
-  tPoints.addPoint(1100,350,75,6,2);
+  planet3_tar = new Planet(1100,350,30,astroidBrown);
+  tPoints.addPoint(1100,350,25,6,2);
 }
 
 void displayPlanets(){

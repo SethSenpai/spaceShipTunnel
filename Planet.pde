@@ -5,23 +5,25 @@ class Planet{
  PVector planetPosition;
  int planetSize ;
  boolean enableGlow = false ;
+ color c;
  
    float fadeRate = 0.5 ;
    float x = 1;
    float fadeValue;
  
- Planet(int x, int y, int size)
+ Planet(int x, int y, int size, color col)
  {
    //planetImage = loadImage("imageName");
    glowImage = loadImage("glow_yellow.png");
    planetPosition = new PVector(x,y);
    planetSize = size;
+   c = col;
  }
 
  void display(){
   ellipseMode(CENTER);
-  checkForGlow();  
-  fill(255);
+  //checkForGlow();  
+  fill(c);
   noStroke();
   ellipse(planetPosition.x, planetPosition.y, planetSize, planetSize );  
  }

@@ -22,7 +22,7 @@ class touchPoint{
      c = color(0,255,255);
      size = s;
      value = 0;
-     avg = new int[6];
+     avg = new int[4];
      trigger = 300;
      STATE = 0;
      timerStart = false;
