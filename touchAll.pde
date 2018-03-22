@@ -6,13 +6,17 @@ class touchAll{
    SpaceTeam sp1;
    SpaceTeam sp2;
    SpaceTeam sp3;
+   int State3Counter;
+   cosmicEventHandler cph;
    
-   touchAll(ParticleSystem p, SpaceTeam s, SpaceTeam c, SpaceTeam a){
+   touchAll(ParticleSystem p, SpaceTeam s, SpaceTeam c, SpaceTeam a ,  cosmicEventHandler cp){
      points = new ArrayList<touchPoint>();
      ps = p;
      sp1 = s;
      sp2 = c;
      sp3 = a;
+     State3Counter = 0;
+     cph = cp;
    }
    
    void addPoint(int x, int y, int s, int ID, int TYPE) {
@@ -52,6 +56,12 @@ class touchAll{
       p.run();
       if(p.STATE == 1){
        //p.size = 10 + (p.value / 10); 
+       p.c = color(p.value * 2 , 255 - p.value / 2 , 255);
+       //println(red(p.c) + "," + green(p.c) + "," + blue(p.c));
+      }
+      else
+      {
+        p.c = color(0,255,255); 
       }
       
       if(p.STATE == 0)
@@ -86,7 +96,10 @@ class touchAll{
       }
       
       if(p.STATE == 3){
-        p.c = color(255,255,0);
+        if(State3Counter < 6){
+        State3Counter  ++;
+        }
+        //p.c = color(255,255,0);
         switch(p.ID){
           case 1:
             for(int j=0; j<5 ; j++){
@@ -115,12 +128,25 @@ class touchAll{
         }
       }
       else{
-        p.c = color(0,255,255); 
+        //p.c = color(0,255,255); 
+        if(State3Counter > 0){
+        State3Counter --;
+        }
       }
     }
     println(".");
+    
+   if(State3Counter > 5 && State3Counter < 9){
+     //print(State3Counter);
+     State3Counter = 10;
+     println("trigger cosmic event!"); 
+     cph.startRun();
+    }
+    else{
+     //println(State3Counter); 
+    }
    }
-  
+   
    void particlesOnPoint(int x, int y){
     ps.origin = new PVector(x,y);
     for(int i = 0; i < 100; i++){

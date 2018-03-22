@@ -39,7 +39,7 @@ class SpaceTeam{
   //}
   
   void trickleSpaceShip(SpaceShip spaceShip){
-    if(frameCount % 40 == 1){
+    if(frameCount % 5 == 1){
      if(counter < 10 && spawned == false){
       counter ++; 
       spaceTeam.add(spaceShip); 
@@ -56,7 +56,7 @@ class SpaceTeam{
    {
      SpaceShip ship = spaceTeam.get(i);
      //ship.goToAstroid = true;
-     ship.goAstroid(astroid);
+     ship.goAstroid(astroid.planetPosition);
    } 
   }
   

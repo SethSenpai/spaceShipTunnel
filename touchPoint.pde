@@ -83,8 +83,13 @@ class touchPoint{
   }
   
   void timer(){
-    if(timerStart == true){
+    if(timerStart == true && STATE != 3){
       timer ++;
+      stroke(255);
+      strokeWeight(5);
+      noFill();
+      ellipse(posX,posY,size+timer-10,size+timer-10);
+      strokeWeight(1);
     }
   }
   

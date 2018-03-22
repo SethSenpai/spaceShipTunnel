@@ -1,13 +1,11 @@
-//class containing the particle object used in the particle system
-
-class Particle {
+class cosmicBit{
+ 
   PVector position;
   PVector velocity;
   PVector acceleration = new PVector(0,0);
   float lifespan;
   
-
-  Particle(PVector l) {
+  cosmicBit(PVector l){
     float rot = random(0,360);
     float speed = random(0,3);
     
@@ -19,7 +17,7 @@ class Particle {
     position = l.copy();
     lifespan = 255.0;
   }
-
+  
   void run() {
     update();
     display();
@@ -52,8 +50,8 @@ class Particle {
 
   // Method to display
   void display() {
-    stroke(255,255,255, lifespan);
-    fill(255,255,255, lifespan);
+    stroke(255,255,125, lifespan);
+    fill(255,255,125, lifespan);
     ellipse(position.x, position.y, 1, 1);
   }
 

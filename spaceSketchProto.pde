@@ -7,14 +7,12 @@ import processing.serial.*;
 import fisica.*;
 
 FWorld world;
-//FCircle FobjOne;
-//FCircle FobjTwo;
-//FCircle FobjThree;
-//FCircle FobjFour;
 
 touchAll tPoints;
 
 ParticleSystem ps; 
+
+cosmicEventHandler cph;
 
 iRenderer iR;
 
@@ -39,23 +37,31 @@ color astroidBrown = color(158,78,0);
 
 void setup(){
   fullScreen(P2D,SPAN);
-  //size(1920,1080,P2D);
+  //size(800,600,P2D);
   frameRate(60);
   smooth();
   
   ps = new ParticleSystem(new PVector(0,0)); 
-  
+  cph = new cosmicEventHandler(new PVector(0,0));
+      
+  //setup the world (Setting up physics engine)
+  setupWorld();
+  //setup the planets (Spawning & Target points)
+  setupPlanets();
+   
   //Create spaceTeams that contains multiple spaceships;  
   spaceTeam1 = new SpaceTeam(1,planet1_tar);
   spaceTeam2 = new SpaceTeam(2,planet2_tar);
   spaceTeam3 = new SpaceTeam(3,planet3_tar);
   
-  tPoints = new touchAll(ps,spaceTeam1,spaceTeam2,spaceTeam3);
+  tPoints = new touchAll(ps,spaceTeam1,spaceTeam2,spaceTeam3,cph);
   
-  //setup the world (Setting up physics engine)
-  setupWorld();
-  //setup the planets (Spawning & Target points)
-  setupPlanets();
+  tPoints.addPoint(200,300,70,1,1);
+  tPoints.addPoint(400,500,25,2,2);
+  tPoints.addPoint(600,450,70,3,1);
+  tPoints.addPoint(800,250,25,4,2);
+  tPoints.addPoint(1000,100,70,5,1);
+  tPoints.addPoint(1100,350,25,6,2);
   
   //set this to adjust for final resolution during projection
   iR = new iRenderer(width,height-40,0);  
@@ -65,62 +71,55 @@ void setup(){
   ardCom.bufferUntil(10);
   
   fx = new PostFX(this);  
-  
-    
 
-  
   bg = new bGround("background.png",70,0.5);
   
 }
 
 void draw(){
+  
   //handle background drawing
   background(0);
-
   bg.run();
   
   //make sure the touchpoints are drawn
   tPoints.run();
       
-      fx.render()
-    .bloom(0.6, 40, 100)
-    .compose();
+  //apply bloom filter
+  fx.render().bloom(0.6, 40, 100).compose();
   
-  displayPlanets();
-  
-    //keep particle system running
+  //keep particle system running
   ps.run();
+  
+  //draw the planets and astroids
+  displayPlanets();
     
   //update physics
   world.step();
   world.draw();
   
-    fx.render()
-    .bloom(0.6, 20, 50)
-    .compose();
+  //run the cosmic event handler
+  cph.run();
+  
+  //add another bloom effect
+  fx.render().bloom(0.6, 20, 50).compose();  
     
-    
-     
-    if(spaceTeam1 != null){
+  //render spaceteams  
+  if(spaceTeam1 != null){
      spaceTeam1.run();
   }
   
-   if(spaceTeam2 != null){
+  if(spaceTeam2 != null){
      spaceTeam2.run();
   }
    
-   if(spaceTeam3 != null){
+  if(spaceTeam3 != null){
      spaceTeam3.run();
   }
   
   //make sure the internal resolution is rendered. THIS METHOD MUST ALWAYS BE CALLED LAST IN THE DRAW STACK!
   iR.render();
   
-}
-
-//used for simulation of touchpoint explosions
-void mousePressed(){
-
 }
 
 void keyPressed(){
@@ -174,32 +173,22 @@ void serialEvent(Serial ardCom) {
 } 
 
 void setupPlanets(){
+
   /*
-  tPoints.addPoint(100,100,50,1,1);
-  tPoints.addPoint(200,200,80,2,1);
-  tPoints.addPoint(300,300,50,3,1);
-  tPoints.addPoint(400,400,20,4,2);
-  tPoints.addPoint(500,300,20,5,2);
-  tPoints.addPoint(600,400,20,6,2);
-  */
+    tPoints.addPoint(200,300,70,1,1);
+    tPoints.addPoint(400,500,25,2,2);
+    tPoints.addPoint(600,450,70,3,1);
+    tPoints.addPoint(800,250,25,4,2);
+    tPoints.addPoint(1000,100,70,5,1);
+    tPoints.addPoint(1100,350,25,6,2);
+*/
   
-  planet1 = new Planet(200,300,80,planetBlue);
-  tPoints.addPoint(200,300,70,1,1);
-  
-  planet1_tar = new Planet(400,500,30,astroidBrown);
-  tPoints.addPoint(400,500,25,2,2);
-  
-  planet2 = new Planet(600,450,80,planetBlue);
-  tPoints.addPoint(600,450,70,3,1);
-  
-  planet2_tar = new Planet(800,250,30,astroidBrown);
-  tPoints.addPoint(800,250,25,4,2);
-  
-  planet3 = new Planet(1000,100,80,planetBlue);
-  tPoints.addPoint(1000,100,70,5,1);
-  
+  planet1 = new Planet(200,300,80,planetBlue);  
+  planet1_tar = new Planet(400,500,30,astroidBrown);  
+  planet2 = new Planet(600,450,80,planetBlue);  
+  planet2_tar = new Planet(800,250,30,astroidBrown);  
+  planet3 = new Planet(1000,100,80,planetBlue);  
   planet3_tar = new Planet(1100,350,30,astroidBrown);
-  tPoints.addPoint(1100,350,25,6,2);
 }
 
 void displayPlanets(){
