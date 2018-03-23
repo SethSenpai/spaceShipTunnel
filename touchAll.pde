@@ -19,8 +19,8 @@ class touchAll{
      cph = cp;
    }
    
-   void addPoint(int x, int y, int s, int ID, int TYPE) {
-    points.add(new touchPoint(x,y,s,ID,TYPE));
+   void addPoint(int x, int y, int s, int ID, int TYPE, Planet p) {
+    points.add(new touchPoint(x,y,s,ID,TYPE,p));
    }
    
    void pointTouched(int ID){
@@ -55,13 +55,24 @@ class touchAll{
       print("\t");
       p.run();
       if(p.STATE == 1){
-       //p.size = 10 + (p.value / 10); 
-       p.c = color(p.value * 2 , 255 - p.value / 2 , 255);
-       //println(red(p.c) + "," + green(p.c) + "," + blue(p.c));
+       
+       if(p.TYPE == 1){
+         p.c = color(p.value * 2 , 255 - p.value / 2 , 255);
+         }
+         else
+         {
+         p.c = color(255, 255 - p.value / 2 , p.value * 2 );
+         }
       }
       else
       {
-        p.c = color(0,255,255); 
+        if(p.TYPE == 1){
+         p.c = color(0,255,255);
+         }
+         else
+         {
+         p.c = color(255,255,0); 
+         }
       }
       
       if(p.STATE == 0)
@@ -100,27 +111,77 @@ class touchAll{
         State3Counter  ++;
         }
         //p.c = color(255,255,0);
+        //println(p.timer);
         switch(p.ID){
           case 1:
+          if(p.timer < 90){
             for(int j=0; j<5 ; j++){
-              sp1.trickleSpaceShip(new SpaceShip(200,300,1));
+                
+              int t = (int)random(1,4);
+              switch(t)
+              {
+               case 1:
+                 sp1.trickleSpaceShip(new SpaceShip((int)sp1.plan.planetPosition.x,(int)sp1.plan.planetPosition.y,t));
+               break;
+               
+               case 2:
+                 sp2.trickleSpaceShip(new SpaceShip((int)sp1.plan.planetPosition.x,(int)sp1.plan.planetPosition.y,t));
+               break;
+               
+               case 3:
+                 sp3.trickleSpaceShip(new SpaceShip((int)sp1.plan.planetPosition.x,(int)sp1.plan.planetPosition.y,t));
+               break;
+              }              
              }
+          }
           break;
           case 2:
              sp1.orbitAstroid();
           break;
           case 3:
+          if(p.timer < 90){
             for(int j=0; j<5 ; j++){
-              sp2.trickleSpaceShip(new SpaceShip(600,450,2));
+              int t = (int)random(1,4);
+              switch(t)
+              {
+               case 1:
+                 sp1.trickleSpaceShip(new SpaceShip((int)sp2.plan.planetPosition.x,(int)sp2.plan.planetPosition.y,t));
+               break;
+               
+               case 2:
+                 sp2.trickleSpaceShip(new SpaceShip((int)sp2.plan.planetPosition.x,(int)sp2.plan.planetPosition.y,t));
+               break;
+               
+               case 3:
+                 sp3.trickleSpaceShip(new SpaceShip((int)sp2.plan.planetPosition.x,(int)sp2.plan.planetPosition.y,t));
+               break;
+              }
              }
+          }
           break;
           case 4:
              sp2.orbitAstroid();
           break;
           case 5:
+          if(p.timer < 90){
             for(int j=0; j<5 ; j++){
-              sp3.trickleSpaceShip(new SpaceShip(1000,100,3));
+             int t = (int)random(1,4);
+              switch(t)
+              {
+               case 1:
+                 sp1.trickleSpaceShip(new SpaceShip((int)sp3.plan.planetPosition.x,(int)sp3.plan.planetPosition.y,t));
+               break;
+               
+               case 2:
+                 sp2.trickleSpaceShip(new SpaceShip((int)sp3.plan.planetPosition.x,(int)sp3.plan.planetPosition.y,t));
+               break;
+               
+               case 3:
+                 sp3.trickleSpaceShip(new SpaceShip((int)sp3.plan.planetPosition.x,(int)sp3.plan.planetPosition.y,t));
+               break;
+              }
              }
+          }
           break;
           case 6:
                sp3.orbitAstroid();

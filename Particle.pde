@@ -9,7 +9,7 @@ class Particle {
 
   Particle(PVector l) {
     float rot = random(0,360);
-    float speed = random(0,3);
+    float speed = random(1,5);
     
     float x = speed * cos(rot);
     float y = speed * sin(rot);

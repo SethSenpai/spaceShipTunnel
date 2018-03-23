@@ -6,13 +6,15 @@ class SpaceTeam{
   boolean spawned;
   int counter;
   Planet astroid;
+  Planet plan;
 
-  SpaceTeam(int id, Planet a){
+  SpaceTeam(int id, Planet a, Planet b){
       spaceTeam = new ArrayList<SpaceShip>();
       spaceTeamID = id;
       spawned = false;
       counter = 0;
       astroid = a;
+      plan = b;
   }
 
   SpaceTeam(PVector position) {
@@ -40,7 +42,7 @@ class SpaceTeam{
   
   void trickleSpaceShip(SpaceShip spaceShip){
     if(frameCount % 5 == 1){
-     if(counter < 10 && spawned == false){
+     if(counter < 2 && spawned == false){
       counter ++; 
       spaceTeam.add(spaceShip); 
      }
@@ -65,10 +67,10 @@ class SpaceTeam{
    for(int i=0 ; i< spaceTeam.size(); i++)
    {
      SpaceShip ship = spaceTeam.get(i);
-     ship.runSpaceShip();
+     ship.runSpaceShip(astroid.planetSize);
      if (ship.isDead()) {
         spaceTeam.remove(i);
-        astroid.planetSize ++ ;
+        astroid.planetSize = astroid.planetSize + 0.2; ;
       }
    } 
   }

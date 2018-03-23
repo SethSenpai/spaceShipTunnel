@@ -11,6 +11,8 @@ class SpaceShip{
   float maxSpeed ;
   float maxforce ;
   
+  float revolveCircle;
+  
   boolean isSpaceShipLaunched = false;
   boolean goToAstroid = false;
   int lifePoints = 500;
@@ -38,9 +40,12 @@ class SpaceShip{
     
     maxSpeed = 2; 
     maxforce = 0.1;
+    
+    revolveCircle = 110;
  }  
 
-void runSpaceShip(){
+void runSpaceShip(float size){
+   revolveCircle = size + 30;
    seek(targetPoint);
    update();
    display(); 
@@ -63,7 +68,7 @@ void applyForce(PVector force) {
 void seek(PVector target){
    
    PVector desired = PVector.sub(target,position);  // A vector pointing from the position to the target
-   if(desired.mag()< 100 && goToAstroid == true)
+   if(desired.mag()< revolveCircle && goToAstroid == true)
    {
      revolve(target);
    }
@@ -89,14 +94,14 @@ void revolve(PVector target){
   //angle = atan2(delta.x,delta.y);
  
   //println("angle " + cos(angle));
-  if(lifePoints < 100){
+  if(lifePoints < revolveCircle){
   position.x = target.x - cos(angle)*lifePoints;
   position.y = target.y - sin(angle)*lifePoints;
   }
   else
   {
-  position.x = target.x - cos(angle)*100;
-  position.y = target.y - sin(angle)*100;
+  position.x = target.x - cos(angle)*revolveCircle;
+  position.y = target.y - sin(angle)*revolveCircle;
   }
    
   angle = angle + 0.1; 

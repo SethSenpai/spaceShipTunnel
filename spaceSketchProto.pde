@@ -50,26 +50,27 @@ void setup(){
   setupPlanets();
    
   //Create spaceTeams that contains multiple spaceships;  
-  spaceTeam1 = new SpaceTeam(1,planet1_tar);
-  spaceTeam2 = new SpaceTeam(2,planet2_tar);
-  spaceTeam3 = new SpaceTeam(3,planet3_tar);
+  spaceTeam1 = new SpaceTeam(1,planet1_tar,planet1);
+  spaceTeam2 = new SpaceTeam(2,planet2_tar,planet2);
+  spaceTeam3 = new SpaceTeam(3,planet3_tar,planet3);
   
   tPoints = new touchAll(ps,spaceTeam1,spaceTeam2,spaceTeam3,cph);
   
-  tPoints.addPoint(200,300,70,1,1);
-  tPoints.addPoint(400,500,25,2,2);
-  tPoints.addPoint(600,450,70,3,1);
-  tPoints.addPoint(800,250,25,4,2);
-  tPoints.addPoint(1000,100,70,5,1);
-  tPoints.addPoint(1100,350,25,6,2);
+  tPoints.addPoint(200,300,120,1,1,planet1);
+  tPoints.addPoint(400,500,70,2,2,planet1_tar);
+  tPoints.addPoint(600,450,120,3,1,planet2);
+  tPoints.addPoint(800,250,70,4,2,planet2_tar);
+  tPoints.addPoint(1000,100,120,5,1,planet3);
+  tPoints.addPoint(1100,350,70,6,2,planet3_tar);
   
   //set this to adjust for final resolution during projection
-  iR = new iRenderer(width,height-40,0);  
+  iR = new iRenderer(width,height,0);  
   
+  /*
   String portName = Serial.list()[0];
   ardCom = new Serial(this, portName, 9600);
   ardCom.bufferUntil(10);
-  
+  */
   fx = new PostFX(this);  
 
   bg = new bGround("background.png",70,0.5);
@@ -124,9 +125,9 @@ void draw(){
 
 void keyPressed(){
     // particle simulations
-    /*
+    
     if(key == '1'){
-      tPoints.pointTouched(1); //this would get triggered when someone touches a point
+
     }
     if(key == '2'){
       tPoints.pointTouched(2); //this would get triggered when someone touches a point
@@ -137,7 +138,7 @@ void keyPressed(){
     if(key == '4'){
       tPoints.pointTouched(4); //this would get triggered when someone touches a point
     }
-    */
+    
     /*
     if(key == '1'){   
       for(int i=0; i<5 ; i++){
@@ -183,12 +184,13 @@ void setupPlanets(){
     tPoints.addPoint(1100,350,25,6,2);
 */
   
-  planet1 = new Planet(200,300,80,planetBlue);  
-  planet1_tar = new Planet(400,500,30,astroidBrown);  
-  planet2 = new Planet(600,450,80,planetBlue);  
-  planet2_tar = new Planet(800,250,30,astroidBrown);  
-  planet3 = new Planet(1000,100,80,planetBlue);  
-  planet3_tar = new Planet(1100,350,30,astroidBrown);
+  //EDIT PLANET POSITION HERE
+  planet1 = new Planet(100,100,130,planetBlue);  
+  planet1_tar = new Planet(400,500,80,astroidBrown);  
+  planet2 = new Planet(600,450,130,planetBlue);  
+  planet2_tar = new Planet(800,250,80,astroidBrown);  
+  planet3 = new Planet(1000,100,130,planetBlue);  
+  planet3_tar = new Planet(1100,350,80,astroidBrown);
 }
 
 void displayPlanets(){
@@ -207,5 +209,5 @@ void setupWorld(){
  Fisica.init(this);
   world = new FWorld();
   world.setGravity(0,0);
-  world.setEdges();
+  //world.setEdges();
 }

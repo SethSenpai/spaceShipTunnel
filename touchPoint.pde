@@ -13,8 +13,9 @@ class touchPoint{
   int STATE; //0 null, 1 hover, 2 touch, 3 hold
   int timer;
   boolean timerStart;
+  Planet plan;
   
-  touchPoint(int x, int y, int s, int id, int type){
+  touchPoint(int x, int y, int s, int id, int type, Planet p){
      posX = x;
      posY = y;
      ID = id;
@@ -26,9 +27,22 @@ class touchPoint{
      trigger = 300;
      STATE = 0;
      timerStart = false;
+     
+     plan = p;
+     
+     if(TYPE == 1){
+     c = color(0,255,255);
+     println("set blue");
+     }
+     else
+     {
+     println("set brown");
+     c = color(255,255,0); 
+     }
   }
   
   void run(){
+     setSizePosition();
      fill(c);
      stroke(c);
      ellipse(posX,posY,size,size);
@@ -69,9 +83,10 @@ class touchPoint{
       STATE = 2;
       timerStart = true;
     }
-    if(value > trigger && STATE == 2 && timer > 100){
+    if(value > trigger && STATE == 2 && timer > 80){
       STATE = 3;
     }
+        
     if(value < trigger){
       STATE = 1;
       timerStart = false;
@@ -83,14 +98,22 @@ class touchPoint{
   }
   
   void timer(){
-    if(timerStart == true && STATE != 3){
+    if(timerStart == true){
       timer ++;
+      if(STATE != 3){
       stroke(255);
       strokeWeight(5);
       noFill();
       ellipse(posX,posY,size+timer-10,size+timer-10);
       strokeWeight(1);
+      }
     }
+  }
+  
+  void setSizePosition(){
+     posX = (int)plan.planetPosition.x; 
+     posY = (int)plan.planetPosition.y;
+     size = (int)plan.planetSize - 10;
   }
   
 }

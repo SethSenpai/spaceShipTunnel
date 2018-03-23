@@ -3,7 +3,7 @@ class Planet{
  PImage planetImage; 
  PImage glowImage; 
  PVector planetPosition;
- int planetSize ;
+ float planetSize ;
  boolean enableGlow = false ;
  color c;
  
@@ -32,7 +32,7 @@ class Planet{
  return  planetPosition;
  }
 
- int getPlanetSize(){
+ float getPlanetSize(){
  return planetSize; 
  } 
 
